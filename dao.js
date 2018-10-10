@@ -3,6 +3,10 @@ const Promise = require('bluebird');
 
 class AppDAO {
 
+    /**
+     * @param {string} dbFilePath 
+     * @constructor
+     */
     constructor(dbFilePath) {
         this.db = new sqlite3.Database(dbFilePath, (err) => {
             if (err) {
@@ -11,6 +15,12 @@ class AppDAO {
         })
     }
 
+    /**
+     * Executa instruções insert, update ou delete no banco de dados
+     * @param {string} sql 
+     * @param {Array} params 
+     * @returns Promise
+     */
     run(sql, params = []) {
         return new Promise((resolve, reject) => {
             this.db.run(sql, params, function (err) {
@@ -23,6 +33,12 @@ class AppDAO {
         })
     }
 
+    /**
+     * Retorna o primeiro registro da query SQL
+     * @param {string} sql 
+     * @param {Array} params
+     * @returns Promise 
+     */
     get(sql, params = []) {
         return new Promise((resolve, reject) => {
             this.db.get(sql, params, (err, result) => {
@@ -35,6 +51,12 @@ class AppDAO {
         })
     }
 
+    /**
+     * Retorna todos os registros da query SQL
+     * @param {string} sql 
+     * @param {Array} params
+     * @returns Promise 
+     */
     all(sql, params = []) {
         return new Promise((resolve, reject) => {
             this.db.all(sql, params, (err, rows) => {
