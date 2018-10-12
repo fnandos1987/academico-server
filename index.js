@@ -24,7 +24,7 @@ const classRepo = new ClassRepository(dao);
 router.post('/usuario/logar', (req, res) => {
     userRepo
     .getByLogin(req.body.login, req.body.pass)
-    .then((user) => res.status(200).json(user.id))
+    .then((user) => res.status(200).json(user != undefined ? user.id : false))
     .catch((err) => res.status(500).json({error: err.toString()}));
 });
 
