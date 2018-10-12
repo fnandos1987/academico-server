@@ -5,7 +5,7 @@ class UserRepository {
     }
 
     getByEmail(email) {
-        return this.dao.get('select * from usuario where email like ?', ['%'+email+'%']);
+        return this.dao.get('select * from usuario where email = ?', [email]);
     }
 
     getByLogin(login, pass) {

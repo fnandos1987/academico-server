@@ -19,25 +19,25 @@ const teacherRepo = new TeacherRepository(dao);
 const classRepo = new ClassRepository(dao);
 
 
-router.post('/logar', (req, res) => {
+router.post('/usuario/logar', (req, res) => {
     userRepo
-    .getByLogin(req.params.login, req.params.pass)
-    .then(user => res.status(200).json(user.id))
-    .catch((err) => { res.status(500).json({ error: err.toString() }); });
+    .getByLogin(req.body.login, req.body.pass)
+    .then((user) => res.status(200).json(user.id))
+    .catch((err) => res.status(500).json({error: err.toString()}));
 });
 
-router.post('/novasenha', (req, res) => {
+router.post('/usuario/novasenha', (req, res) => {
     userRepo
     .getByEmail(req.body.email)
-    .then(user => res.json(user))
-    .catch((err) => { res.status(500).json({ error: err.toString() }); });
+    .then((user) => res.status(200).json(user != undefined))
+    .catch((err) => res.status(500).json({ error: err.toString() }));
 });
 
 router.get('/professor/buscar/:name', (req, res) => {
     teacherRepo
     .getByName(req.params.name)
-    .then(teachers => res.json(teachers))
-    .catch((err) => { res.status(500).json({ error: err.toString() }); });	
+    .then((teachers) => res.json(teachers))
+    .catch((err) => res.status(500).json({ error: err.toString() }));	
 });
 
 app.listen(3000, function () {
