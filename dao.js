@@ -25,9 +25,9 @@ class AppDAO {
         return new Promise((resolve, reject) => {
             this.db.run(sql, params, function (err) {
                 if (err) {
-                    reject(err)
+                    reject({ ok: false })
                 } else {
-                    resolve({ id: this.lastID })
+                    resolve({ ok: true })
                 }
             })
         })

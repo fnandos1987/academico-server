@@ -20,7 +20,6 @@ const userRepo = new UserRepository(dao);
 const teacherRepo = new TeacherRepository(dao);
 const classRepo = new ClassRepository(dao);
 
-
 router.post('/usuario/logar', (req, res) => {
     userRepo
     .getByLogin(req.body.login, req.body.pass)
@@ -32,6 +31,13 @@ router.post('/usuario/novasenha', (req, res) => {
     userRepo
     .getByEmail(req.body.email)
     .then((user) => res.status(200).json(user != undefined))
+    .catch((err) => res.status(500).json({ error: err.toString() }));
+});
+
+router.put('/usuario/alterar', (req, res) => {
+    userRepo
+    .updateUser(req.body.id, req.body.nome, req.body.idioma)
+    .then((ret) => res.status(200).json(ret.ok))
     .catch((err) => res.status(500).json({ error: err.toString() }));
 });
 
