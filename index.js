@@ -50,14 +50,14 @@ router.get('/professor', (req, res) => {
 
 router.post('/professor/novo', (req, res) => {
     teacherRepo
-    .insert(req.params.professor)
+    .insert(req.body.professor)
     .then((ok) => res.status(200).json(ok))
     .catch((err) => res.status(500).json(err));
 });
 
 router.put('/professor/alterar', (req, res) => {
     teacherRepo
-    .update(req.params.professor)
+    .update(req.body.professor)
     .then((ok) => res.status(200).json(ok))
     .catch((err) => res.status(500).json(err));
 });
