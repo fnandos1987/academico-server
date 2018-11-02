@@ -2,7 +2,6 @@ const express = require('express');
 const cors = require('cors');
 const app = express();
 const bodyParser = require('body-parser');
-const multer = require('multer');
 
 const router = express.Router();
 
@@ -11,16 +10,6 @@ app.use(bodyParser.urlencoded({ extended: true }));
 app.use(bodyParser.json());
 app.use('/', router);
 
-const storage = multer.diskStorage({
-    destination: function (req, file, cb) {
-        cb(null, 'public/imgs');
-    },
-    filename: function (req, file, cb) {
-        cb(null, file.originalname);
-    }
-});
-
-const upload = multer({ storage });
 app.use(express.static(__dirname + '/public'));
 
 const AppDAO = require('./dao');
@@ -59,29 +48,26 @@ router.get('/professor', (req, res) => {
     .catch((err) => res.status(500).json({ error: err.toString() }));
 });
 
-router.get('/professor/buscar/:name', (req, res) => {
+router.post('/professor/novo', (req, res) => {
     teacherRepo
-    .getByName(req.params.name)
-    .then((teachers) => res.status(200).json(teachers))
-    .catch((err) => res.status(500).json({ error: err.toString() }));
+    .insert(req.params.professor)
+    .then((ok) => res.status(200).json(ok))
+    .catch((err) => res.status(500).json(err));
 });
 
-router.get('/professor/listar/:page', (req, res) => {
+router.put('/professor/alterar', (req, res) => {
     teacherRepo
-    .getAllPaged(10, req.params.page * 10)
-    .then((teachers) => res.status(200).json(teachers))
-    .catch((err) => res.status(500).json({ error: err.toString() }));
+    .update(req.params.professor)
+    .then((ok) => res.status(200).json(ok))
+    .catch((err) => res.status(500).json(err));
 });
 
-router.get('/professor/:id', (req, res) => {
+router.delete('/professor/delete/:id', (req, res) => {
     teacherRepo
-    .getById(req.params.id)
-    .then((teachers) => res.status(200).json(teachers))
-    .catch((err) => res.status(500).json({ error: err.toString() }));
+    .delete(req.params.id)
+    .then((ok) => res.status(200).json(ok))
+    .catch((err) => res.status(500).json(err));
 });
-
-router.post('/file/upload', upload.single('file'),
-    (req, res) => res.status(200).send('<h2>Upload realizado com sucesso</h2>'));
 
 app.listen(3000, function () {
     console.log('listen in port 3000')

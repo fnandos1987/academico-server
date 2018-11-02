@@ -8,16 +8,21 @@ class TeacherRepository {
         return this.dao.all('select * from professor', []);
     }
 
-    getByName(name) {
-        return this.dao.all('select * from professor where nome like ?', ['%'+name+'%']);
+    insert(professor) {
+        let sql = 'insert into professor (id, nome, data_nascto, foto, curriculo, status) values (?, ?, ?, ?, ?, ?)';
+        let data = [professor.id, professor.nome, professor.data_nascto, professor.foto, professor.curriculo, professor.status];
+        return this.dao.run(sql, data);
     }
 
-    getAllPaged(perPage, page) {
-        return this.dao.all('select * from professor limit ? offset ?', [perPage, page])
+    update(professor) {
+        let sql = 'update professor set nome = ?, data_nascto = ?, curriculo = ?, status = ? where id = ?';
+        let data = [professor.nome, professor.data_nascto, professor.curriculo, professor.status, professor.id];
+        return this.dao.run(sql, data);
     }
 
-    getById(id) {
-        return this.dao.get('select * from professor where id = ?', [id]);
+    delete(id) {
+        let sql = 'delete from professor where id = ?';
+        return this.dao.run(sql, [id]);
     }
 }
 
