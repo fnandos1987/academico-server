@@ -9,6 +9,7 @@ class TeacherRepository {
     }
 
     insert(professor) {
+        professor.id = this.getNextId();
         let sql = 'insert into professor (id, nome, data_nascto, foto, curriculo, status) values (?, ?, ?, ?, ?, ?)';
         let data = [professor.id, professor.nome, professor.data_nascto, professor.foto, professor.curriculo, professor.status];
         return this.dao.run(sql, data);
@@ -23,6 +24,10 @@ class TeacherRepository {
     delete(id) {
         let sql = 'delete from professor where id = ?';
         return this.dao.run(sql, [id]);
+    }
+
+    getNextId() {
+        return this.dao.get('select max(id) + 1 from professor', []);
     }
 }
 
